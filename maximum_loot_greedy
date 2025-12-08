@@ -1,0 +1,94 @@
+# python3
+#using sorting o(n log n)
+from sys import stdin
+
+
+def maximum_loot_value(capacity, weights, prices):
+    assert 0 <= capacity <= 2 * 10 ** 6
+    assert len(weights) == len(prices)
+    assert 1 <= len(weights) <= 10 ** 3
+    assert all(0 < w <= 2 * 10 ** 6 for w in weights)
+    assert all(0 <= p <= 2 * 10 ** 6 for p in prices)
+
+    # 1. Compute price per weight for each item
+    items = [(p / w, w, p) for w, p in zip(weights, prices)]
+
+    # Create a list of items with price per weight for sorting
+    # Each item is represented as a tuple: (price_per_weight, weight, total_price)
+    # - price_per_weight: p / w, used to decide which items are most valuable per unit weight
+    # - weight: w, the maximum weight available for this item
+    # - total_price: p, the total value of the full item
+    # We use zip(weights, prices) to pair each weight with its corresponding price
+
+    items = [(p / w, w, p) for w, p in zip(weights, prices)]
+
+    # 2. Sort items by price/weight descending
+    items.sort(reverse=True)
+
+    total_value = 0.0
+    remaining = capacity
+
+    # 3. Take items greedily
+    for ratio, w, p in items:
+        if remaining == 0:
+            break
+        amount = min(w, remaining)
+        total_value += amount * ratio
+        remaining -= amount
+
+    return total_value
+
+
+if __name__ == "__main__":
+    data = list(map(int, stdin.read().split()))
+    n, input_capacity = data[0:2]
+    input_prices = data[2:(2 * n + 2):2]
+    input_weights = data[3:(2 * n + 2):2]
+    opt_value = maximum_loot_value(input_capacity, input_weights, input_prices)
+    print("{:.10f}".format(opt_value))
+
+#--------------------------------------------------------------------------
+
+# without sorting
+# o(n^2)   (faster)
+# time: o(n^2)
+
+def maximum_loot_value(capacity, weights, prices):
+    n = len(weights)
+    taken = [0.0] * n   # track how much of each item is taken
+    total_value = 0.0
+    remaining = capacity
+
+    while remaining > 0:
+        # find best available item
+        best_index = -1
+        best_ratio = -1
+
+        for i in range(n):
+            if taken[i] < weights[i]:   # still available
+                ratio = prices[i] / weights[i]
+                if ratio > best_ratio:
+                    best_ratio = ratio
+                    best_index = i
+
+        # no item left (shouldn't happen unless weights=0)
+        if best_index == -1:
+            break
+
+        # take either the full item or the remaining capacity
+        available = weights[best_index] - taken[best_index]
+        amount = min(available, remaining)
+
+        taken[best_index] += amount
+        total_value += amount * (prices[best_index] / weights[best_index])
+        remaining -= amount
+
+    return total_value
+
+if __name__ == "__main__":
+    data = list(map(int, stdin.read().split()))
+    n, input_capacity = data[0:2]
+    input_prices = data[2:(2 * n + 2):2]
+    input_weights = data[3:(2 * n + 2):2]
+    opt_value = maximum_loot_value(input_capacity, input_weights, input_prices)
+    print("{:.10f}".format(opt_value))
