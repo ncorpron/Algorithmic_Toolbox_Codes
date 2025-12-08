@@ -1,0 +1,52 @@
+
+#------------------------------------------------------------------
+'''iterative approach:
+#a = last digit of fib(n-2)
+# b = last digit of fib(n-1)
+# (a+b) % 10 = last digit of fib(n)
+# stores only last two digits at any time
+# Time complexity: O(n)
+# Space complexity: O(1) (only two variables)'''
+
+# 0-based index (normal)
+
+def last_digit_of_fibonacci_number(n):
+    assert 0 <= n <= 10 ** 7
+
+    if n <= 1:
+        return n
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, (a + b) % 10
+    return b
+
+
+
+if __name__ == '__main__':
+    input_n = int(input())
+    print(last_digit_of_fibonacci_number(input_n))
+
+
+
+#--------------------------------------
+#1-based index (you usually will NOT see this in real problems, just for practice and coursera submission)
+
+# python3
+# Compute the last digit of the nth Fibonacci number (1-based indexing)
+
+def last_digit_of_fibonacci_number(n):
+    assert 1 <= n <= 10**7  # n must be at least 1
+
+    if n <= 2:
+        return n  # fib(1)=1, fib(2)=2
+
+    a, b = 1, 2  # initialize first two Fibonacci numbers
+    for _ in range(3, n + 1):
+        a, b = b, (a + b) % 10  # iterative update, keep only last digit
+    return b
+
+
+if __name__ == '__main__':
+    n = int(input())
+    print(last_digit_of_fibonacci_number(n))
+
