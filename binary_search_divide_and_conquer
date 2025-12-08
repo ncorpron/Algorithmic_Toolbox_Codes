@@ -1,0 +1,36 @@
+# python3
+
+def binary_search(keys, query):
+    """Standard binary search. Returns index of query in keys, or -1 if not found."""
+    low = 0
+    high = len(keys) - 1
+
+    while low <= high:
+        mid = low + (high - low) // 2
+        if keys[mid] == query:
+            return mid
+        elif keys[mid] < query:
+            low = mid + 1
+        else:
+            high = mid - 1
+
+    return -1
+
+
+if __name__ == '__main__':
+    # Read number of keys and the keys themselves
+    n = int(input())
+    input_keys = list(map(int, input().split()))
+    assert len(input_keys) == n
+
+    # Ensure keys are strictly increasing (checked once)
+    assert all(input_keys[i] < input_keys[i + 1] for i in range(len(input_keys) - 1))
+
+    # Read number of queries and the queries themselves
+    k = int(input())
+    input_queries = list(map(int, input().split()))
+    assert len(input_queries) == k
+
+    # Perform binary search for each query and print results space-separated
+    print(" ".join(str(binary_search(input_keys, q)) for q in input_queries))
+
