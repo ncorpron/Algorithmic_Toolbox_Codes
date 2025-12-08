@@ -1,0 +1,19 @@
+# python3
+
+from collections import namedtuple
+from sys import stdin
+
+Segment = namedtuple('Segment', 'start end')
+
+
+def compute_optimal_points(segments):
+    pointers  = []
+    # Sort segments by their end points (right side *best for greedy*)
+    sorted_segments = sorted(segments, key=lambda s: s.end) #s for segment
+    current_point = None
+    for segment in sorted_segments:
+        # If the current point does not cover the segment, add a new point
+        if current_point is None or current_point < segment.start:
+            current_point = segment.end
+            pointers.append(current_point)
+    return pointers
