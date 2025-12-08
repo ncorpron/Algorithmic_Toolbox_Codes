@@ -1,0 +1,47 @@
+# python3
+
+from itertools import permutations
+
+# works, but inefficient for large inputs
+def largest_number_naive(numbers):
+    numbers = list(map(str, numbers))
+
+    largest = 0
+
+    for permutation in permutations(numbers):
+        largest = max(largest, int("".join(permutation)))
+
+    return largest
+
+#-------------------------------------------------------
+# greedy method
+
+def largest_number(numbers):
+    numbers = list(map(str, numbers))
+
+    # Custom sort: compare concatenated results
+    def compare(x, y): # x & y are two numbers from sorting list that sorting algorithm is comparing
+        if x + y > y + x: #ex: '9' + '34'  vs '34' + '9'  → '934'  vs '349'
+            return -1    # -1 means x should come before y
+        elif x + y < y + x:
+            return 1  # 1 means y should come before x
+        else:
+            return 0   # 0 means equal
+
+    from functools import cmp_to_key
+    numbers.sort(key=cmp_to_key(compare))
+
+    return ''.join(numbers)
+
+'''numbers = ['9', '34', '3']
+# Python calls compare on pairs during sorting:
+compare('34', '9')   # '349' vs '934' → returns 1   # x='34', y='9'
+'''
+
+
+
+if __name__ == '__main__':
+    n = int(input())
+    input_numbers = input().split()
+    assert len(input_numbers) == n
+    print(largest_number(input_numbers))
