@@ -1,0 +1,37 @@
+# python3
+
+
+def compute_optimal_summands(n):
+    assert 1 <= n <= 10 ** 9
+    summands = []
+    current_summand = 1
+
+    while n > 0:
+        if n - current_summand > current_summand:
+            summands.append(current_summand)
+            n -= current_summand
+            current_summand += 1
+        else:
+            # Take the remaining n as the last summand
+            summands.append(n)
+            break
+
+    return summands
+
+
+
+if __name__ == '__main__':
+    input_n = int(input())
+    output_summands = compute_optimal_summands(input_n)
+    print(len(output_summands))
+    print(*output_summands)
+
+# quick way to estimate, but not needed in code
+'''# Using Gauss formula to find maximum k
+def max_k(n):
+    k = 0
+    while (k * (k + 1)) // 2 <= n:
+        k += 1
+    return k - 1  # Because loop overshoots by 1
+
+print(max_k(8))  # Output: 3 (sum of 1+2+3 = 6 ≤ 8)'''
