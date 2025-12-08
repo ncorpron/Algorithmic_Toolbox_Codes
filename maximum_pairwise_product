@@ -1,0 +1,27 @@
+def max_pairwise_product(numbers):
+    assert len(numbers) >= 2
+    assert all(0 <= x <= 2 * 10 ** 5 for x in numbers)
+
+    n = len(numbers)
+
+    # Find the index of the largest number
+    max1_index = 0
+    for i in range(1, n):
+        if numbers[i] > numbers[max1_index]:
+            max1_index = i
+
+    # Find index of the second largest number
+    max2_index = -1
+    for i in range(n):
+        if i != max1_index and (max2_index == -1 or numbers[i] > numbers[max2_index]):
+            max2_index = i
+
+    return numbers[max1_index] * numbers[max2_index]
+
+
+
+if __name__ == '__main__':
+    n = int(input())
+    input_numbers = list(map(int, input().split()))
+    assert len(input_numbers) == n
+    print(max_pairwise_product(input_numbers))
