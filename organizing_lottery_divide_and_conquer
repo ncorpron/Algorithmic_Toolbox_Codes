@@ -1,0 +1,35 @@
+from bisect import bisect_left, bisect_right
+
+
+def points_cover(starts, ends, points):
+    """
+    Efficient computation: count how many segments cover each point.
+    Uses sorting + binary search.
+    """
+    # Sort starts and ends separately
+    sorted_starts = sorted(starts)
+    sorted_ends = sorted(ends)
+
+    counts = []
+    for point in points:
+        # Number of segments starting <= point
+        left_count = bisect_right(sorted_starts, point)
+        # Number of segments ending < point
+        right_count = bisect_left(sorted_ends, point)
+        # Segments covering the point
+        counts.append(left_count - right_count)
+
+    return counts
+
+
+if __name__ == '__main__':
+    from sys import stdin
+
+    data = list(map(int, stdin.read().split()))
+    n, m = data[0], data[1]
+    input_starts = data[2:2 * n + 2:2]
+    input_ends = data[3:2 * n + 2:2]
+    input_points = data[2 * n + 2:]
+
+    output_count = points_cover(input_starts, input_ends, input_points)
+    print(*output_count)
