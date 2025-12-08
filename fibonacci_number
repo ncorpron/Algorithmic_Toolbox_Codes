@@ -1,0 +1,42 @@
+# faster memoization solution (uses a memo dictionary to store previously computed Fibonacci numbers)
+def fibonacci_number(n, memo={}):
+    assert 0 <= n <= 45
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        result = n
+    else:
+        result = fibonacci_number(n - 1, memo) + fibonacci_number(n - 2, memo)
+    memo[n] = result
+    return result
+
+if __name__ == '__main__':
+    n = int(input())
+    print(fibonacci_number(n))
+
+
+
+#--------------------------------------------------
+# Compute the last digit of the nth Fibonacci number (1-based indexing)
+#   1-BASED INDEXING ***
+
+def last_digit_of_fibonacci_number(n):
+    assert 1 <= n <= 10**7
+
+    if n <= 2:
+        return 1  # F₁=1, F₂=1
+
+    a, b = 1, 1  # first two Fibonacci numbers
+    for _ in range(3, n + 1):
+        a, b = b, (a + b) % 10
+    return b
+
+if __name__ == '__main__':
+    n = int(input())
+    print(last_digit_of_fibonacci_number(n))
+
+
+
+
+
+
