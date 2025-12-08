@@ -1,0 +1,52 @@
+# python3
+
+
+def compute_min_number_of_refills(total_distance, max_distance_on_full_tank, stops):
+    assert 1 <= total_distance <= 10 ** 5
+    assert 1 <= max_distance_on_full_tank <= 400
+    assert 1 <= len(stops) <= 300
+    assert 0 < stops[0] and all(stops[i] < stops[i + 1] for i in range(len(stops) - 1)) and stops[-1] < total_distance
+
+    # Add the destination as a final "stop"
+    all_points = stops + [total_distance]
+
+    current_position = 0
+    number_of_refills = 0
+    index = 0
+    total_points = len(all_points)
+
+    # Main greedy loop
+    while index < total_points:
+
+        last_index_reached = index
+
+        # Move forward while the next point is within tank range
+        while (
+                index < total_points and
+                all_points[index] - current_position <= max_distance_on_full_tank
+        ):
+            index += 1
+
+        # If we did not advance, we are stuck → impossible
+        if index == last_index_reached:
+            return -1
+
+        # If we reached the destination
+        if all_points[index - 1] == total_distance:
+            return number_of_refills
+
+        # Refill at the last reachable station
+        current_position = all_points[index - 1]
+        number_of_refills += 1
+
+    return number_of_refills
+
+
+if __name__ == '__main__':
+    input_d = int(input())
+    input_m = int(input())
+    input_n = int(input())
+    input_stops = list(map(int, input().split()))
+    assert len(input_stops) == input_n
+
+    print(compute_min_number_of_refills(input_d, input_m, input_stops))
