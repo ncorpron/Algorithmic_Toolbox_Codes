@@ -1,0 +1,28 @@
+def fibonacci_number_again(n, m):
+    assert 0 <= n <= 10**18 and 2 <= m <= 10**3
+
+    # Step 1: compute Pisano period for m
+    pisano = []
+    previous, current = 0, 1
+
+    for _ in range(m * m):  # Pisano period length ≤ m^2
+        pisano.append(previous)
+        previous, current = current, (previous + current) % m
+
+        # A Pisano period always starts with 0, 1
+        if previous == 0 and current == 1:
+            break
+
+    period_length = len(pisano)
+
+    # Step 2: reduce n modulo the period
+    n_mod = n % period_length
+
+    # Step 3: return F(n_mod) % m
+    return pisano[n_mod]
+
+
+
+if __name__ == '__main__':
+    input_n, input_m = map(int, input().split())
+    print(fibonacci_number_again(input_n, input_m))
