@@ -1,0 +1,29 @@
+
+# built-in function approach
+import math
+a = 12
+b = 18
+result = math.lcm(a,b)
+print(result)  # Output: 36
+
+
+
+
+#---------------------------------------------------
+# manual implementation using GCD
+
+import math
+def lcm(a, b):
+    assert 1 <= a <= 2 * 10 ** 9 and 1 <= b <= 2 * 10 ** 9
+
+    return abs(a * b) // math.gcd(a, b)
+
+# example
+#a,b = 12, 18
+#print(lcm(a,b))
+
+
+
+if __name__ == '__main__':
+    input_a, input_b = map(int, input().split())
+    print(lcm(input_a, input_b))
