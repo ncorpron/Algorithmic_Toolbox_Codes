@@ -37,3 +37,16 @@ if __name__ == '__main__':
     output_sequence = compute_operations(input_n)
     print(len(output_sequence) - 1)
     print(*output_sequence)
+
+
+'''Why it’s efficient:
+
+Each number from 2 to n is processed once.
+
+Checking the three options (−1, ÷2, ÷3) is constant time per number.
+
+Reconstruction of the path is O(n) worst-case.
+
+For n = 10^6, it runs comfortably within time limits.
+
+This is basically the standard solution used in competitive programming for this problem.'''
