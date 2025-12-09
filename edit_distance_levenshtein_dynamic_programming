@@ -1,22 +1,29 @@
+#levenshtein distance implementation with space optimization
+# python3
+#time complexity: O(n*m)
+
 def edit_distance(s1, s2):
     n, m = len(s1), len(s2)
 
-    # Make s1 the shorter string for memory efficiency
     if n > m:
         s1, s2 = s2, s1
         n, m = m, n
 
-    prev_row = list(range(n + 1))
+    prev = list(range(n + 1))
 
     for j in range(1, m + 1):
-        current_row = [j] + [0] * n
+        curr = [j] + [0] * n
         for i in range(1, n + 1):
             if s1[i - 1] == s2[j - 1]:
-                current_row[i] = prev_row[i - 1]
+                curr[i] = prev[i - 1]
             else:
-                current_row[i] = 1 + min(prev_row[i],      # deletion
-                                         current_row[i - 1], # insertion
-                                         prev_row[i - 1])    # substitution
-        prev_row = current_row
+                curr[i] = 1 + min(prev[i], curr[i - 1], prev[i - 1])
+        prev = curr
 
-    return prev_row[n]
+    return prev[n]
+
+
+if __name__ == "__main__":
+    s1 = input().strip()
+    s2 = input().strip()
+    print(edit_distance(s1, s2))
