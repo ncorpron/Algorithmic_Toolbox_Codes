@@ -1,0 +1,44 @@
+# python3
+
+
+def find_maximum_value(dataset):
+    assert 1 <= len(dataset) <= 29
+
+    digits = []
+    operations = []
+    for i in range(len(dataset)):
+        if i % 2 == 0:
+            digits.append(int(dataset[i]))
+        else:
+            operations.append(dataset[i])
+    n = len(digits)
+    min_values = [[0 for _ in range(n)] for _ in range(n)]
+    max_values = [[0 for _ in range(n)] for _ in range(n)]
+    for i in range(n):
+        min_values[i][i] = digits[i]
+        max_values[i][i] = digits[i]
+    for s in range(1, n):
+        for i in range(n - s):
+            j = i + s
+            min_val = float('inf')
+            max_val = float('-inf')
+            for k in range(i, j):
+                op = operations[k]
+                a = max_values[i][k]
+                b = max_values[k + 1][j]
+                c = min_values[i][k]
+                d = min_values[k + 1][j]
+                if op == '+':
+                    min_val = min(min_val, a + b, a + d, c + b, c + d)
+                    max_val = max(max_val, a + b, a + d, c + b, c + d)
+                elif op == '*':
+                    min_val = min(min_val, a * b, a * d, c * b, c * d)
+                    max_val = max(max_val, a * b, a * d, c * b, c * d)
+            min_values[i][j] = min_val
+            max_values[i][j] = max_val
+    return max_values[0][n - 1]
+
+
+
+if __name__ == "__main__":
+    print(find_maximum_value(input()))
