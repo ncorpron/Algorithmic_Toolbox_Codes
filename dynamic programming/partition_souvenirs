@@ -1,6 +1,9 @@
+
+-----------------------------------------------
+#brute force
+
 from itertools import product
 from sys import stdin
-
 
 def partition3_naive(values):
     for c in product(range(3), repeat=len(values)):
@@ -12,7 +15,12 @@ def partition3_naive(values):
             return 1
 
     return 0
+----------------------------------------------------
+# dynamic programming
 
+
+from itertools import product
+from sys import stdin
 
 def partition3(values):
     assert 1 <= len(values) <= 20
