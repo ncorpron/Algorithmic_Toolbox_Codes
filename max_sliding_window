@@ -1,0 +1,30 @@
+from collections import deque
+
+def max_sliding_window(sequence, m):
+    dq = deque()
+    result = []
+
+    for i, value in enumerate(sequence):
+        # Remove indices outside the window
+        if dq and dq[0] <= i - m:
+            dq.popleft()
+
+        # Remove smaller values from the back
+        while dq and sequence[dq[-1]] <= value:
+            dq.pop()
+
+        dq.append(i)
+
+        # First window completes at i = m - 1
+        if i >= m - 1:
+            result.append(sequence[dq[0]])
+
+    return result
+
+
+if __name__ == '__main__':
+    n = int(input())
+    input_sequence = list(map(int, input().split()))
+    window_size = int(input())
+
+    print(*max_sliding_window(input_sequence, window_size))
