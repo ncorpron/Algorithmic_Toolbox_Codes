@@ -1,0 +1,27 @@
+#memoized depth computation
+#o(n) iterative
+
+def compute_height(self):
+        depth = [0] * self.n
+
+        for v in range(self.n):
+                if depth[v] != 0:
+                        continue
+
+                path = []
+                i = v
+
+                # Walk up until root or known depth
+                while i != -1 and depth[i] == 0:
+                        path.append(i)
+                        i = self.parent[i]
+
+                # Base height
+                current_depth = 0 if i == -1 else depth[i]
+
+                # Assign depths going back down
+                while path:
+                        current_depth += 1
+                        depth[path.pop()] = current_depth
+
+        return max(depth)
